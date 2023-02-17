@@ -1,19 +1,47 @@
 # web-small-app
 
-## Project setup
-```
-npm install
-```
+运行启项目前请先下载 small-app-server[https://github.com/x-eryue/small-app-server]接口，并运行
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
+### 项目描述
 
-### Compiles and minifies for production
-```
-npm run build
-```
++ 一个以Vue-cli构建的webapp响应式的页面
++ 类似购物的项目，但是夹杂有新闻、图片等功能
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+### 项目功能
+
+##### 首页
+
++ 轮播图、九宫格
+
+##### 购物车
+
++ vuex数据存储，徽标的响应，商品选中及数量变化价格的变化
+
+##### 用户
+
++ vue-router，是否是登录状态，本地存储token，对token的验证
++ 注册、登录，返回token，保存本地
+
+##### 新闻
+
++ 新闻列表
++ 新闻详情
+
+##### 商品
+
++ 商品列表
++ 商品详情
+  + 商品加入购物车，vuex的数据存储，购物车的同步
+
+##### 图片
+
++ 图片列表
+  + 图片的懒加载
++ 图片详情
+
+##### 用户评论
+
++ 用户对新闻或者图片的评论
+
+
+

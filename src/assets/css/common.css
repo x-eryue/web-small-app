@@ -1,0 +1,63 @@
+/* 公共CSS */
+html,
+body {
+  max-width: 750px;
+  min-width: 320px;
+  width: 10rem;
+  height: 100%;
+  margin: 0 auto;
+  font-size: 16px;
+  line-height: 1.5;
+  background-color: skyblue;
+  word-wrap: break-word;
+}
+ul {
+  list-style: none;
+}
+i {
+  font-style: normal;
+}
+.mui-grid-view.mui-grid-9 .mui-media img {
+  width: 60%;
+}
+@media screen and (min-width: 750px) {
+  html {
+    font-size: 75px !important;
+  }
+
+  /* 对UI样式的调整 */
+  .mint-header.is-fixed,
+  .mui-bar-tab.mui-bar {
+    width: 750px;
+    margin: 0 auto;
+  }
+  #app .mint-swipe {
+    height: 5rem;
+  }
+  #app .mint-swipe-item {
+    line-height: 5rem;
+  }
+}
+@media screen and (max-width: 750px) {
+  .mui-grid-view.mui-grid-9 .mui-media img {
+    width: 100%;
+  }
+  #app .mint-swipe-item {
+    line-height: 7rem;
+  }
+  #app .mint-swipe {
+    height: 5rem;
+  }
+  #app .mint-swipe-item {
+    line-height: 5rem;
+  }
+}
+
+.one-elli {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.active {
+  color: aqua;
+}
