@@ -11,16 +11,20 @@ export default {
   },
   methods: {
     async getNewsList() {
-      const ret = await this.axios.get("/api/getnewslist");
-      const { meta, message } = ret;
-      if (meta.status !== 1) {
-        this.listArr = message;
-      } else {
-        this.msg = meta.msg;
+      try {
+        const result = await this.axios.get("/news/getnewslist");
+        const { meta, message } = result;
+        if (meta.status == 200) {
+          this.listArr = message;
+        } else {
+          console.log(meta.msg);
+        }
+      } catch (e) {
+        console.log(e);
       }
     },
     gotoNewsInfo(news_id) {
-      this.$router.push({ path: "/news-info", query: { news_id } });
+      this.$router.push({ path: "/home/news-info", query: { news_id } });
     },
   },
 };
@@ -39,7 +43,7 @@ export default {
           <div class="mui-media-body">
             <h5 class="mui-ellipsis">{{ item.title }}</h5>
             <div>
-              <span>发表时间:{{ item.add_time }}</span>
+              <span>发表时间:{{ item.add_time | formData }}</span>
               <span>点击:{{ item.click }}</span>
             </div>
           </div>
@@ -48,5 +52,4 @@ export default {
     </ul>
   </div>
 </template>
-<style lang="less" scoped>
-</style>
+<style lang="less" scoped></style>

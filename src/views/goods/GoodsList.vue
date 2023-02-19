@@ -12,11 +12,19 @@ export default {
   },
   methods: {
     async getGoodsList() {
-      let result = await this.axios.get(
-        "/api/getgoods?pageindex=" + this.pageindex
-      );
-      console.log(result);
-      result.meta.status === 0 ? (this.listArr = result.message) : "";
+      try {
+        let result = await this.axios.get(
+          "/goods/getlist?pageindex=" + this.pageindex
+        );
+        const { meta, message } = result;
+        if (meta.status == 200) {
+          this.listArr = message;
+        } else {
+          console.log(meta.msg);
+        }
+      } catch (e) {
+        console.log(e);
+      }
     },
   },
 };
@@ -24,7 +32,7 @@ export default {
 <template>
   <div class="goods-list">
     <router-link
-      :to="{ path: '/goods-info', query: { id: item.id } }"
+      :to="{ path: '/home/goods-info', query: { id: item.id } }"
       class="mui-card"
       v-for="item of listArr"
       :key="item.id"
@@ -35,7 +43,7 @@ export default {
       </div>
       <div class="mui-card-content">
         <div class="mui-card-content-inner">
-          <h4>{{ item.title }}</h4>
+          <h4>{{ item.title | formData }}</h4>
         </div>
       </div>
       <div class="mui-card-footer">

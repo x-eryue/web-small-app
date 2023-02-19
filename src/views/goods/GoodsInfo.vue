@@ -18,21 +18,35 @@ export default {
   },
   methods: {
     async getGoodsInfo() {
-      const ret = await this.axios({
-        url: "api/goods/getinfo/" + this.id,
-        method: "get",
-      });
-      if (ret.meta.status !== 1) {
-        this.goodsInfo = ret.message;
+      try {
+        const result = await this.axios({
+          url: "/goods/getinfo/" + this.id,
+          method: "get",
+        });
+        const { meta, message } = result;
+        if (meta.status == 200) {
+          this.goodsInfo = message;
+        } else {
+          console.log(meta.msg);
+        }
+      } catch (e) {
+        console.log(e);
       }
     },
     async getGoodsLbt() {
-      const ret = await this.axios({
-        url: "/api/getgoodslunbo/" + this.id,
-        method: "get",
-      });
-      if (ret.status !== 1) {
-        this.lbtArr = ret.message;
+      try {
+        const result = await this.axios({
+          url: "/goods/getgoodslunbo/" + this.id,
+          method: "get",
+        });
+        const { meta, message } = result;
+        if (meta.status == 200) {
+          this.lbtArr = message;
+        } else {
+          console.log(meta.msg);
+        }
+      } catch (e) {
+        console.log(e);
       }
     },
     changeValue(val) {
@@ -117,7 +131,7 @@ export default {
         <div class="mui-card-content-inner g-param">
           <span>商品货号:{{ goodsInfo.goods_no }}</span>
           <span>库存情况:{{ goodsInfo.stock_quantity }}</span>
-          <span>上架时间:{{ goodsInfo.add_time }}</span>
+          <span>上架时间:{{ goodsInfo.add_time | formData }}</span>
         </div>
       </div>
       <div class="mui-card-footer">

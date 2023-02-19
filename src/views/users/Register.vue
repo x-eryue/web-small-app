@@ -14,20 +14,20 @@ export default {
       const file = e.target.files;
       const data = new FormData();
       data.append("avatar", file[0]);
-      const ret = await this.axios.post("/api/user/upload", data, {
+      const retsult = await this.axios.post("/users/user_avatar", data, {
         "content-type": "multipart/from-data",
       });
-      this.avatar_src = ret.message.avatar_src;
+      console.log(retsult.message.avatar_src);
+      this.avatar_src = retsult.message.avatar_src;
     },
     async register() {
-      const ret = await this.axios.post("/api/user/register", {
+      const retsult = await this.axios.post("/users/register", {
         user_name: this.user_name,
         nick_name: this.nick_name,
         user_pwd: this.user_pwd,
         avatar_src: this.avatar_src,
       });
-      const token = ret.token;
-      localStorage.setItem("token", token);
+      localStorage.setItem("token", result.token);
       this.$router.push({ path: "/users" });
     },
   },

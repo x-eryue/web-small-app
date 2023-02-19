@@ -21,18 +21,23 @@ export default {
   methods: {
     async verifyToken(token) {
       try {
-        const ret = await this.axios.post("/api/user/verifyToken", {
+        const result = await this.axios.post("/users/verifyToken", {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         });
-        if (ret.status !== 1) {
-          this.user = ret.message;
+        const { message, meta } = result;
+
+        if (meta.status == 200 && message.user_id) {
+          this.user = {
+            user_avatar: message.user_avatar,
+            nick_name: message.nick_name,
+            user_name: message.user_name,
+          };
         }
-        if (this.user == null) {
-          this.$router.push({ path: "/users" });
-        }
-      } catch (err) {}
+      } catch (err) {
+        console.log(err);
+      }
     },
   },
 };

@@ -10,15 +10,16 @@ export default {
   mounted() {},
   methods: {
     async login() {
-      const result = await this.axios.post("/api/user/login", {
+      const result = await this.axios.post("/users/login", {
         user_name: this.user_name,
         user_pwd: this.user_pwd,
       });
-      const { messag, meta, token } = result;
-      if (meta.status !== 1) {
+
+      const { message, meta } = result;
+      if (meta.status == 200 && message.token) {
         // 登录成功
         this.$router.push({ path: "/users" });
-        localStorage.setItem("token", token);
+        localStorage.setItem("token", message.token);
       }
     },
   },
@@ -34,11 +35,12 @@ export default {
           name="user_name"
           id="user_name"
           placeholder="账号:admin;密码:admin"
+          v-model="user_name"
         />
       </div>
       <div class="cell">
         <label for="user_pwd">密&nbsp;&nbsp;码:</label>
-        <input type="text" name="user_pwd" id="user_pwd" />
+        <input type="text" name="user_pwd" id="user_pwd" v-model="user_pwd" />
       </div>
       <mt-button type="primary" size="large" @click="login">登录</mt-button>
     </div>

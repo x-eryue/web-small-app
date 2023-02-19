@@ -11,13 +11,18 @@ export default {
     this.getLunBo();
   },
   methods: {
-    getLunBo() {
-      this.axios
-        .get("/api/getlunbo")
-        .then((result) => {
-          this.lbtArr = result.message;
-        })
-        .catch((err) => {});
+    async getLunBo() {
+      try {
+        const result = await this.axios.get("/pics/getlunbo");
+        const { meta, message } = result;
+        if (meta.status == 200) {
+          this.lbtArr = message;
+        } else {
+          console.log(meta.msg);
+        }
+      } catch (e) {
+        console.log(e);
+      }
     },
   },
   components: {

@@ -18,11 +18,17 @@ export default {
   },
   methods: {
     async getCmtList() {
-      const ret = await this.axios.get(
-        `/api/getcomments/${this.newsId}?pageindex=${this.pageindex}`
-      );
-      console.log(111);
-      this.list = this.list.concat(ret.message);
+      try {
+        const result = await this.axios.get(
+          `/cmts/getcmts/${this.newsId}?pageindex=${this.pageindex}`
+        );
+        const { meta, message } = result;
+        if (meta.status == 200) {
+          this.list = message;
+        }
+      } catch (e) {
+        console.log(e);
+      }
     },
     btnClick() {
       // 提交时验证用户是否登录，有token验证token,没有token跳转登录页
@@ -37,34 +43,42 @@ export default {
     },
     async verifyToken() {
       try {
-        const { meta, message } = await this.axios.post(
-          "/api/user/verifyToken",
-          {
-            headers: {
-              Authorization: `Bearer ${this.token}`,
-            },
-          }
-        );
-        if (meta.status !== 1) {
+        const result = await this.axios.post("/users/verifyToken", {
+          headers: {
+            Authorization: `Bearer ${this.token}`,
+          },
+        });
+        const { meta, message } = result;
+        if (meta.status == 200) {
           this.user = message;
           this.postCmt();
         } else {
-          this.$router.push("/login");
-          alert(meta.msg);
+          this.$router.push({ path: "/users/logins" });
         }
-      } catch (err) {}
+      } catch (e) {
+        console.log(e);
+      }
     },
     async postCmt() {
-      const ret = await this.axios.post("/api/postcomments/" + this.newsId, {
-        data: {
-          content: this.cmtValue,
-          user: this.user,
-        },
-      });
-    },
-    changeCmtVal(e) {
-      let val = e.target.value;
-      this.cmtValue = val;
+      if (this.cmtValue.trim() == "") {
+        alert("评论内容不能为空");
+        return;
+      }
+      try {
+        const result = await this.axios.post("/cmts/postcmts/" + this.newsId, {
+          data: {
+            content: this.cmtValue,
+            user: this.user,
+          },
+        });
+        const { meta, message } = result;
+        if (meta.status == 200) {
+          this.list.unshift(message);
+          this.cmtValue = "";
+        }
+      } catch (e) {
+        console.log(e);
+      }
     },
     getMore() {
       this.pageindex + 1;
@@ -77,7 +91,7 @@ export default {
   <div class="comment">
     <div class="cmt-area">
       <h5>发表评论</h5>
-      <textarea placeholder="文明用语" @input="changeCmtVal"></textarea>
+      <textarea placeholder="文明用语" v-model="cmtValue"></textarea>
       <mt-button @click="btnClick" type="primary" size="large">提交</mt-button>
     </div>
     <div class="cmt-list">
@@ -87,6 +101,7 @@ export default {
           <span>{{ item.nick_name }}</span>
         </div>
         <div class="content">{{ item.contents }}</div>
+        <div class="add_time">{{ item.add_time | formData }}</div>
       </div>
     </div>
     <mt-button type="primary" size="large" plain @click="getMore">

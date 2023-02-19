@@ -17,12 +17,16 @@ export default {
   methods: {
     async getNewsInfo() {
       try {
-        const ret = await this.axios.get("/api/getnew/" + this.news_id);
-        const { meta, message } = ret;
-        if (meta.status !== 1) {
+        const result = await this.axios.get("/news/getnew/" + this.news_id);
+        const { meta, message } = result;
+        if (meta.status == 200) {
           this.newsInfo = message;
+        } else {
+          console.log(meta.msg);
         }
-      } catch (err) {}
+      } catch (e) {
+        console.log(e);
+      }
     },
   },
 };
@@ -30,7 +34,7 @@ export default {
 <template>
   <div class="news-info">
     <div class="header">
-      <h2 class="title">{{ newsInfo.title }}</h2>
+      <h2 class="title">{{ newsInfo.title | formData }}</h2>
       <p class="info">
         <span>{{ newsInfo.add_time }}</span>
       </p>

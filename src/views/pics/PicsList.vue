@@ -6,7 +6,7 @@ export default {
     return {
       cate: [],
       listArr: [],
-      id: 1,
+      id: 0,
     };
   },
   mounted() {
@@ -18,18 +18,34 @@ export default {
   },
   methods: {
     async getPicCate() {
-      const result = await this.axios.get("/api/getimgcategory");
-
-      if (result.meta.status == 0) {
-        this.cate = result.message;
+      try {
+        const result = await this.axios.get("/pics/getimgcategory");
+        const { meta, message } = result;
+        if (meta.status == 200) {
+          message.unshift({ cateId: 0, title: "全部" });
+          this.cate = message;
+        } else {
+          console.log(meta.msg);
+        }
+      } catch (e) {
+        console.log(e);
       }
     },
     async getPicList(id) {
-      console.log(id);
-      const result = await this.axios.get("/api/getimages/" + id);
-      if (result.meta.status == 0) {
-        this.listArr = result.message;
+      try {
+        const result = await this.axios.get("/pics/getimages/" + id);
+        const { meta, message } = result;
+        if (meta.status == 200) {
+          this.listArr = message;
+        } else {
+          console.log(meta.msg);
+        }
+      } catch (e) {
+        console.log(e);
       }
+    },
+    goToPicInfo(id) {
+      this.$router.push({ path: "/home/pic-info", query: { id } });
     },
   },
 };
@@ -38,12 +54,7 @@ export default {
   <div class="pic-list">
     <div
       id="sliderSegmentedControl"
-      class="
-        mui-scroll-wrapper
-        mui-slider-indicator
-        mui-segmented-control
-        mui-segmented-control-inverted
-      "
+      class="mui-scroll-wrapper mui-slider-indicator mui-segmented-control mui-segmented-control-inverted"
     >
       <div class="mui-scroll">
         <a
@@ -54,13 +65,13 @@ export default {
           :key="item.cateId"
           @click="getPicList(item.cateId)"
         >
-          {{ item.title }}
+          {{ item.title | formData }}
         </a>
       </div>
     </div>
     <!-- list -->
     <ul class="list">
-      <li v-for="item of listArr" :key="item.id">
+      <li v-for="item of listArr" :key="item.id" @click="goToPicInfo(item.id)">
         <img v-lazy="item.img_url" />
         <p>{{ item.zhai_yao }}</p>
       </li>
