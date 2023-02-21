@@ -1,4 +1,5 @@
 <script>
+import { MessageBox } from "mint-ui";
 export default {
   name: "comment",
   props: ["newsId"],
@@ -11,6 +12,7 @@ export default {
       user: {},
       list: [],
       pageindex: 1,
+      disabled: false,
     };
   },
   mounted() {
@@ -31,14 +33,22 @@ export default {
       }
     },
     btnClick() {
+      this.disabled = true;
       // 提交时验证用户是否登录，有token验证token,没有token跳转登录页
       this.token = localStorage.getItem("token");
-      // 防抖
       if (this.token) {
         this.verifyToken();
         // token 验证成功则进行请求
       } else {
-        alert("去登录");
+        MessageBox.confirm("你还没有登录", "请登录")
+          .then((action) => {
+            this.$router.push({ path: "/users/logins" });
+            this.disabled = false;
+          })
+          .catch((cancel) => {
+            this.disabled = false;
+            console.log(cancel);
+          });
       }
     },
     async verifyToken() {
@@ -52,8 +62,15 @@ export default {
         if (meta.status == 200) {
           this.user = message;
           this.postCmt();
+          this.disabled = false;
         } else {
-          this.$router.push({ path: "/users/logins" });
+          MessageBox.confirm("用户以过期", "请登录")
+            .then((action) => {
+              this.$router.push({ path: "/users/logins" });
+            })
+            .catch((cancel) => {
+              console.log(cancel);
+            });
         }
       } catch (e) {
         console.log(e);
@@ -92,7 +109,13 @@ export default {
     <div class="cmt-area">
       <h5>发表评论</h5>
       <textarea placeholder="文明用语" v-model="cmtValue"></textarea>
-      <mt-button @click="btnClick" type="primary" size="large">提交</mt-button>
+      <mt-button
+        @click="btnClick"
+        type="primary"
+        size="large"
+        :disabled="disabled"
+        >提交</mt-button
+      >
     </div>
     <div class="cmt-list">
       <div class="box" v-for="(item, index) of list" :key="index">

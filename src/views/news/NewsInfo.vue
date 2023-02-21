@@ -34,9 +34,9 @@ export default {
 <template>
   <div class="news-info">
     <div class="header">
-      <h2 class="title">{{ newsInfo.title | formData }}</h2>
+      <h2 class="title">{{ newsInfo.title }}</h2>
       <p class="info">
-        <span>{{ newsInfo.add_time }}</span>
+        <span>{{ newsInfo.add_time | formData }}</span>
       </p>
     </div>
     <div class="cont" v-html="newsInfo.content"></div>

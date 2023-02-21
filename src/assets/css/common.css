@@ -20,6 +20,13 @@ i {
 .mui-grid-view.mui-grid-9 .mui-media img {
   width: 60%;
 }
+.mint-msgbox-wrapper .mint-msgbox {
+  width: 45%;
+}
+.mint-toast.is-placemiddle .mint-toast-text {
+  font-size: 0.5rem;
+  line-height: 1rem;
+}
 @media screen and (min-width: 750px) {
   html {
     font-size: 75px !important;
@@ -50,6 +57,9 @@ i {
   }
   #app .mint-swipe-item {
     line-height: 5rem;
+  }
+  .mint-msgbox-wrapper .mint-msgbox {
+    width: 85%;
   }
 }
 

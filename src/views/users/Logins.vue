@@ -14,12 +14,14 @@ export default {
         user_name: this.user_name,
         user_pwd: this.user_pwd,
       });
-
+      console.log(result);
       const { message, meta } = result;
-      if (meta.status == 200 && message.token) {
+      if (meta.status == 200 && message) {
         // 登录成功
         this.$router.push({ path: "/users" });
         localStorage.setItem("token", message.token);
+      } else {
+        console.log(meta.msg);
       }
     },
   },

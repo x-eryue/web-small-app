@@ -27,13 +27,14 @@ export default {
           },
         });
         const { message, meta } = result;
-
-        if (meta.status == 200 && message.user_id) {
+        if (meta.status == 200 && message) {
           this.user = {
             user_avatar: message.user_avatar,
             nick_name: message.nick_name,
             user_name: message.user_name,
           };
+        } else {
+          console.log(meta.status);
         }
       } catch (err) {
         console.log(err);
