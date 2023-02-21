@@ -39,7 +39,7 @@ Vue.filter("formData", function (val) {
   let numData = new Date().getTime(val);
   let d = new Date(numData);
   let year = d.getFullYear();
-  let month = d.getMonth();
+  let month = d.getMonth() + 1;
   let date = d.getDate();
   let h = d.getHours();
   if (h < 10) {
